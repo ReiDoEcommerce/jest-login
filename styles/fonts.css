@@ -1,0 +1,350 @@
+@font-face {
+    font-family: 'Cinzel';
+    src: url('/fonts/CinzelDecorative-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Graphie';
+    src: url('/fonts/Graphie-Book.otf') format('truetype');
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Graphie';
+    src: url('/fonts/Graphie-Bold.otf') format('truetype');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Graphie';
+    src: url('/fonts/Graphie-SemiBold.otf') format('truetype');
+    font-weight: 600;
+    font-display: swap;
+}
+
+[class*="graphie"] {
+    font-family: Graphie;
+}
+
+[class*="cinzel"] {
+    font-family: Cinzel;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+span,
+strong,
+time,
+address,
+i,
+a,
+b,
+label,
+li,
+td {
+    text-rendering: optimizeLegibility !important;
+}
+
+[class*="-italic"] {
+    font-style: italic;
+}
+
+[class*="-black"] {
+    font-weight: 900;
+}
+
+[class*="-book"] {
+    font-weight: 800;
+}
+
+[class*="-bold"] {
+    font-weight: 700;
+}
+
+[class*="-semibold"] {
+    font-weight: 600;
+}
+
+[class*="-medium"] {
+    font-weight: 500;
+}
+
+[class*="-regular"] {
+    font-weight: 400;
+}
+
+[class*="-light"] {
+    font-weight: 300;
+}
+
+/* titulos */
+[class*="title-1"] {
+    font-size: 72px;
+}
+[class*="title-2"] {
+    font-size: 64px;
+}
+[class*="title-3"] {
+    font-size: 48px;
+}
+[class*="title-4"] {
+    font-size: 40px;
+}
+[class*="title-5"] {
+    font-size: 32px;
+}
+[class*="title-6"] {
+    font-size: 24px;
+}
+[class*="title-7"] {
+    font-size: 18px;
+}
+
+/* paragrafos */
+[class*="paragraph-1"] {
+    font-size: 20px;
+} 
+[class*="paragraph-2"] {
+    font-size: 16px;
+} 
+
+[class*="paragraph-3"] {
+    font-size: 14px;
+} 
+
+/* links */
+[class*="link-1"] {
+    font-size: 20px;
+} 
+[class*="link-2"] {
+    font-size: 16px;
+} 
+
+@media only screen and (max-width:1600px) {
+/* titulos */
+[class*="title-1"] {
+    font-size: 66.5px;
+}
+[class*="title-2"] {
+    font-size: 60px; 
+}
+[class*="title-3"] {
+    font-size: 45.5px;
+}
+[class*="title-4"] {
+    font-size: 37.5px; 
+}
+[class*="title-5"] {
+    font-size: 30px; 
+}
+[class*="title-6"] {
+    font-size: 23px; 
+}
+[class*="title-7"] {
+    font-size: 16px; 
+}
+}
+
+@media only screen and (max-width:1400px) {
+[class*="title-1"] {
+    font-size: 61px;
+}
+[class*="title-2"] {
+    font-size: 56px;
+}
+[class*="title-3"] {
+    font-size: 43px;
+}
+[class*="title-4"] {
+    font-size: 35px;
+}
+[class*="title-5"] {
+    font-size: 28px; 
+}
+[class*="title-6"] {
+    font-size: 22px; 
+}
+
+[class*="paragraph-1"] {
+    font-size: 19px;
+} 
+[class*="paragraph-2"] {
+    font-size: 15.5px;
+} 
+
+[class*="link-1"] {
+    font-size: 19px;
+} 
+[class*="link-2"] {
+    font-size: 15.5px;
+} 
+}
+
+@media only screen and (max-width:1200px) {
+[class*="title-1"] {
+    font-size: 55.5px;
+}
+[class*="title-2"] {
+    font-size: 52px;
+}
+[class*="title-3"] {
+    font-size: 41.5px;
+}
+[class*="title-4"] {
+    font-size: 32.5px;
+}
+[class*="title-5"] {
+    font-size: 26px; 
+}
+[class*="title-6"] {
+    font-size: 21px; 
+}
+
+[class*="paragraph-1"] {
+    font-size: 16px;
+} 
+[class*="paragraph-2"] {
+    font-size: 14px;
+} 
+
+[class*="link-1"] {
+    font-size: 18px;
+} 
+[class*="link-2"] {
+    font-size: 15px;
+}  
+}
+
+@media only screen and (max-width: 1024px) {
+[class*="title-1"] {
+    font-size: 50px; 
+}  
+[class*="title-2"] {
+    font-size: 48px;
+}
+[class*="title-3"] {
+    font-size: 34px; 
+}
+[class*="title-4"] {
+    font-size: 30px; 
+}
+[class*="title-5"] {
+    font-size: 24px; 
+}
+[class*="title-6"] {
+    font-size: 19px; 
+}
+[class*="title-7"] {
+    font-size: 15px; 
+}
+
+[class*="paragraph-1"] {
+    font-size: 16px;
+} 
+[class*="paragraph-2"] {
+    font-size: 14px;
+} 
+
+[class*="paragraph-3"] {
+    font-size: 12px;
+} 
+
+[class*="link-1"] {
+    font-size: 17px;
+} 
+[class*="link-2"] {
+    font-size: 14.5px;
+} 
+}
+
+@media only screen and (max-width: 768px) {
+[class*="title-1"] {
+    font-size: 40px; 
+}  
+[class*="title-2"] {
+    font-size: 32px !important;
+}
+[class*="title-3"] {
+    font-size: 27px; 
+}
+[class*="title-4"] {
+    font-size: 23px; 
+}
+[class*="title-5"] {
+    font-size: 20px; 
+}
+[class*="title-6"] {
+    font-size: 18px; 
+}
+[class*="title-7"] {
+    font-size: 15px; 
+}
+
+[class*="paragraph-1"] {
+    font-size: 15px;
+} 
+[class*="paragraph-2"] {
+    font-size: 13px;
+} 
+
+[class*="paragraph-3"] {
+    font-size: 12px;
+} 
+
+[class*="link-1"] {
+    font-size: 16px; 
+} 
+[class*="link-2"] {
+    font-size: 14px;
+} 
+}
+
+@media only screen and (max-width: 500px) {
+    [class*="title-1"] {
+    font-size: 35px; 
+}  
+[class*="title-2"] {
+    font-size: 28px !important;
+}
+[class*="title-3"] {
+    font-size: 24px; 
+}
+[class*="title-4"] {
+    font-size: 21px; 
+}
+[class*="title-5"] {
+    font-size: 18px; 
+}
+[class*="title-6"] {
+    font-size: 17px; 
+}
+[class*="title-7"] {
+    font-size: 14px; 
+}
+
+[class*="paragraph-1"] {
+    font-size: 14px;
+} 
+[class*="paragraph-2"] {
+    font-size: 12.7px;
+} 
+
+[class*="paragraph-3"] {
+    font-size: 12px;
+} 
+
+[class*="link-1"] {
+    font-size: 15px; 
+} 
+[class*="link-2"] {
+    font-size: 13.5px;
+} 
+}
