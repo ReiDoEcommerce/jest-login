@@ -45,15 +45,31 @@ describe("Login tests", () => {
     });
   });
 
-  it("should not send a signIn request if at least one field is empty", async () => {
-      const signInButton = screen.getByTestId("button-submit-login");
-      const spy = jest.spyOn(axios, 'post')
-      userEvent.click(signInButton);
+  it("should not send a signIn request if at least one field is empty", () => {
+    const signInButton = screen.getByTestId("button-submit-login");
+    const spy = jest.spyOn(axios, "post");
+    userEvent.click(signInButton);
+
+    setTimeout(() => {
       expect(spy).toHaveBeenCalledTimes(0);
+    }, 0);
   });
 
-  // - Validar se o SignIn foi chamado ao clicar no botão de submit com os inputs com os valores certos.
-  it("should send a signIn request if all fields are valids", () => {});
+  it("should send a signIn request if all fields are valids", async () => {
+    const emailInput = screen.getByPlaceholderText(/Email/i);
+    const passwordInput = screen.getByPlaceholderText(/Password/i);
+
+    await userEvent.type(emailInput, "tiagodiasmaciel2000@gmail.com");
+    await userEvent.type(passwordInput, "123");
+
+    const signInButton = screen.getByTestId("button-submit-login");
+    const spy = jest.spyOn(axios, "post");
+    userEvent.click(signInButton);
+
+    setTimeout(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+    }, 0);
+  });
 
   // -Validar se o usuário foi persistido nos cookies
   it("should have permanents cookies after login with valid data", () => {});
