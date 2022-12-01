@@ -1,6 +1,6 @@
 import SignInComponent from "../../../../components/sections/login/signIn";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createMockRouter } from "testUtils/createMockRouter";
 import { AuthProvider } from "../../../../src/contexts/Auth";
 import { ProfileProvider } from "src/contexts/Profile";
@@ -67,7 +67,7 @@ describe("Login tests", () => {
         201,
         {
           data: { token: "token1234token" },
-          email: "tiagodiasmaciel2000@gmail.com",
+          email: "randomEmail@gmail.com",
           password: "123",
         }
       );
@@ -75,7 +75,7 @@ describe("Login tests", () => {
       const emailInput = screen.getByPlaceholderText(/Email/i);
       const passwordInput = screen.getByPlaceholderText(/Password/i);
 
-      await userEvent.type(emailInput, "tiagodiasmaciel2000@gmail.com");
+      await userEvent.type(emailInput, "randomEmail@gmail.com");
       await userEvent.type(passwordInput, "123");
 
       await waitFor(() => {
@@ -86,10 +86,46 @@ describe("Login tests", () => {
   });
 
   describe("Data validation", () => {
-    // -Validar se o usuário foi persistido nos cookies
+    beforeEach(async () => {
+      render(
+        <RouterContext.Provider
+          value={createMockRouter({
+            pathname: "profile",
+          })}
+        >
+          <ProfileProvider>
+            <AuthProvider>
+              <SignInComponent />
+            </AuthProvider>
+          </ProfileProvider>
+        </RouterContext.Provider>
+      );
+
+      const emailInput = screen.getByPlaceholderText(/Email/i);
+      const passwordInput = screen.getByPlaceholderText(/Password/i);
+
+      await userEvent.type(emailInput, "randomEmail@gmail.com");
+      await userEvent.type(passwordInput, "123");
+    });
+
     it("should have permanents cookies after login with valid data", async () => {});
 
-    // - Validar se o usuário foi redirecionado para /profile
-    it("should redirect user to profile page after login with valid data", () => {});
+    it("should redirect user to profile page after login with valid data", async () => {
+      const signInButton = screen.getByTestId("button-submit-login");
+
+      AxiosAdapter.onPost("https://api.masterofminiatures.com/login").reply(
+        201,
+        {
+          data: { token: "token1234token" },
+          email: "tiagodiasmaciel2000@gmail.com",
+          password: "123",
+        }
+      );
+
+      userEvent.click(signInButton);
+      await waitFor(() => {
+        expect(global.window.location.pathname).toContain("/profile");
+      });
+    });
   });
 });
