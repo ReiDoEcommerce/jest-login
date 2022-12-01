@@ -1,6 +1,6 @@
 import SignInComponent from "../../../../components/sections/login/signIn";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-import { render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { createMockRouter } from "testUtils/createMockRouter";
 import { AuthProvider } from "../../../../src/contexts/Auth";
 import { ProfileProvider } from "src/contexts/Profile";
@@ -9,71 +9,76 @@ import "@testing-library/jest-dom";
 import axios from "axios";
 
 describe("Login tests", () => {
-  beforeEach(() => {
-    render(
-      <RouterContext.Provider value={createMockRouter({})}>
-        <ProfileProvider>
-          <AuthProvider>
-            <SignInComponent />
-          </AuthProvider>
-        </ProfileProvider>
-      </RouterContext.Provider>
-    );
-  });
-
-  it("should have a message error `Please enter a email` with empty email field after submit form", async () => {
-    const signInButton = screen.getByTestId("button-submit-login");
-    expect(signInButton).toBeInTheDocument();
-
-    await waitFor(() => {
-      userEvent.click(signInButton);
-      const emailErrorMessage = screen.getByText(/Please enter a email/i);
-      expect(emailErrorMessage).toBeInTheDocument();
-    });
-  });
-
-  it("should have a message error `Please enter a password.` with empty password field after submit form", async () => {
-    const signInButton = screen.getByTestId("button-submit-login");
-    expect(signInButton).toBeInTheDocument();
-
-    await waitFor(() => {
-      userEvent.click(signInButton);
-      const passwordErrorMessage = screen.getByText(
-        /Please enter a password./i
+  describe("Inputs validation", () => {
+    beforeEach(() => {
+      cleanup();
+      render(
+        <RouterContext.Provider value={createMockRouter({})}>
+          <ProfileProvider>
+            <AuthProvider>
+              <SignInComponent />
+            </AuthProvider>
+          </ProfileProvider>
+        </RouterContext.Provider>
       );
-      expect(passwordErrorMessage).toBeInTheDocument();
     });
-  });
 
-  it("should not send a signIn request if at least one field is empty", () => {
-    const signInButton = screen.getByTestId("button-submit-login");
-    const spy = jest.spyOn(axios, "post");
-    userEvent.click(signInButton);
+    it("should have a message error `Please enter a email` with empty email field after submit form", async () => {
+      const signInButton = screen.getByTestId("button-submit-login");
+      expect(signInButton).toBeInTheDocument();
 
-    setTimeout(() => {
-      expect(spy).toHaveBeenCalledTimes(0);
-    }, 0);
-  });
+      await waitFor(() => {
+        userEvent.click(signInButton);
+        const emailErrorMessage = screen.getByText(/Please enter a email/i);
+        expect(emailErrorMessage).toBeInTheDocument();
+      });
+    });
 
-  it("should send a signIn request if all fields are valids", async () => {
-    const emailInput = screen.getByPlaceholderText(/Email/i);
-    const passwordInput = screen.getByPlaceholderText(/Password/i);
+    it("should have a message error `Please enter a password.` with empty password field after submit form", async () => {
+      const signInButton = screen.getByTestId("button-submit-login");
+      expect(signInButton).toBeInTheDocument();
 
-    await userEvent.type(emailInput, "tiagodiasmaciel2000@gmail.com");
-    await userEvent.type(passwordInput, "123");
+      await waitFor(() => {
+        userEvent.click(signInButton);
+        const passwordErrorMessage = screen.getByText(
+          /Please enter a password./i
+        );
+        expect(passwordErrorMessage).toBeInTheDocument();
+      });
+    });
 
-    const signInButton = screen.getByTestId("button-submit-login");
-    const spy = jest.spyOn(axios, "post");
-    userEvent.click(signInButton);
+    it("should not send a signIn request if at least one field is empty", () => {
+      const signInButton = screen.getByTestId("button-submit-login");
+      const spy = jest.spyOn(axios, "post");
+      userEvent.click(signInButton);
 
-    setTimeout(() => {
-      expect(spy).toHaveBeenCalledTimes(1);
-    }, 0);
+      setTimeout(() => {
+        expect(spy).toHaveBeenCalledTimes(0);
+      }, 0);
+    });
+
+    it("should send a signIn request if all fields are valids", async () => {
+      const emailInput = screen.getByPlaceholderText(/Email/i);
+      const passwordInput = screen.getByPlaceholderText(/Password/i);
+
+      await userEvent.type(emailInput, "tiagodiasmaciel2000@gmail.com");
+      await userEvent.type(passwordInput, "123");
+
+      const signInButton = screen.getByTestId("button-submit-login");
+      const spy = jest.spyOn(axios, "post");
+      userEvent.click(signInButton);
+
+      setTimeout(() => {
+        expect(spy).toHaveBeenCalledTimes(1);
+      }, 0);
+    });
   });
 
   // -Validar se o usuário foi persistido nos cookies
-  it("should have permanents cookies after login with valid data", () => {});
+  it("should have permanents cookies after login with valid data", async () => {});
 
   // - Validar se o usuário foi redirecionado para /profile
-  it("should redirect user to profile page after login with valid data", () => {});
+  it("should redirect user to profile page after login with valid data", async () => {
+
+  });
 });
