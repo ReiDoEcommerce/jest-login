@@ -3,8 +3,6 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import { AuthProvider } from "../../../../src/contexts/Auth";
 import { ProfileProvider } from "src/contexts/Profile";
 import { api } from "../../../../src/services/api";
-import * as cookies from "src/utils/cookies";
-import ProfilePage from "pages/profile";
 import "@testing-library/jest-dom";
 
 describe("Login tests", () => {
