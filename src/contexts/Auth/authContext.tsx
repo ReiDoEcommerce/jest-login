@@ -23,7 +23,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const { auth } = new LoginApi();
       const { getAddressesList } = new ProfileApi();
-
+      
       const user = await auth(payload);
 
       const address = await getAddressesList();
