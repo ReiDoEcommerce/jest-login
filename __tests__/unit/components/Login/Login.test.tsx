@@ -1,10 +1,24 @@
 import SignInComponent from "../../../../components/sections/login/signIn";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { AuthProvider } from "../../../../src/contexts/Auth";
+import UserDataMock from "../../../../__mocks__/userData";
 import { ProfileProvider } from "src/contexts/Profile";
-import Router from "next/router";
+import * as Mocks from "../../../../__mocks__/mocks";
 import { api } from "../../../../src/services/api";
+import { getCookie } from "src/utils/cookies";
 import "@testing-library/jest-dom";
+
+Mocks.clearGlobalWindow();
+Mocks.mockNextRouter();
+
+const { validUser } = UserDataMock;
+const { invalidUser } = UserDataMock;
+
+const validUserEmail = validUser.email;
+const validUserPassword = validUser.password;
+
+const invalidUserEmail = invalidUser.email;
+const invalidUserPassword = invalidUser.password;
 
 jest.mock("axios", () => {
   return {
@@ -20,30 +34,6 @@ jest.mock("axios", () => {
   };
 });
 
-delete global.window.location;
-global.window = Object.create(window);
-global.window.location = {
-  ancestorOrigins: null,
-  hash: null,
-  host: "",
-  port: "3030",
-  protocol: "http:",
-  hostname: "",
-  href: "http://localhost",
-  origin: "",
-  pathname: null,
-  search: null,
-  assign: null,
-  reload: null,
-  replace: null,
-};
-
-const useRouter = jest.spyOn(require("next/router"), "useRouter");
-useRouter.mockImplementation(() => ({
-  pathname: "/ff",
-  push: jest.fn((path) => (global.window.location.pathname = path)),
-}));
-
 describe("Login tests", () => {
   describe("Inputs validation", () => {
     beforeEach(() => {
@@ -56,7 +46,7 @@ describe("Login tests", () => {
       );
     });
 
-    it("should have a message error `Please enter a email` with empty email field after submit form", async () => {
+    it("should have a message error `Please enter a email` after submit form with invalid email", async () => {
       const emailInput: any = screen.getByPlaceholderText(/Email/i);
       const signInButton = screen.getByTestId("button-submit-login");
 
@@ -73,7 +63,7 @@ describe("Login tests", () => {
       expect(emailMessageError).toBeInTheDocument();
     });
 
-    it("should have a message error `Please enter a password.` with empty password field after submit form", async () => {
+    it("should have a message error `Please enter a password.` after submit form with invalid password", async () => {
       const passwordInput: any = screen.getByPlaceholderText(/Password/i);
       const signInButton = screen.getByTestId("button-submit-login");
 
@@ -108,26 +98,26 @@ describe("Login tests", () => {
     });
 
     it("should send a signIn request if all fields are valids", async () => {
-      const emailInput: any = screen.getByPlaceholderText(/Email/i);
       const passwordInput: any = screen.getByPlaceholderText(/Password/i);
       const signInButton = screen.getByTestId("button-submit-login");
+      const emailInput: any = screen.getByPlaceholderText(/Email/i);
 
       expect(passwordInput).toBeInTheDocument();
-      expect(emailInput).toBeInTheDocument();
       expect(signInButton).toBeInTheDocument();
+      expect(emailInput).toBeInTheDocument();
 
       expect(passwordInput.value).toHaveLength(0);
       expect(emailInput.value).toHaveLength(0);
 
       await act(() => {
-        fireEvent.change(emailInput, {
-          target: { value: "Lucmaieski@gmail.com" },
+        fireEvent.change(emailInput, { target: { value: invalidUserEmail } });
+        fireEvent.change(passwordInput, {
+          target: { value: invalidUserPassword },
         });
-        fireEvent.change(passwordInput, { target: { value: "123" } });
       });
 
-      expect(emailInput.value).not.toHaveLength(0);
       expect(passwordInput.value).not.toHaveLength(0);
+      expect(emailInput.value).not.toHaveLength(0);
 
       const spyAxiosRequest = jest.spyOn(api, "post");
       await act(() => fireEvent.click(signInButton));
@@ -146,19 +136,33 @@ describe("Login tests", () => {
         </ProfileProvider>
       );
     });
-    it("should have permanents cookies after login with valid data", async () => {});
-
-    it("should redirect user to profile page after login with valid data", async () => {
-      const emailInput: any = screen.getByPlaceholderText(/Email/i);
+    it("should have permanents cookies after login with valid data", async () => {
       const passwordInput: any = screen.getByPlaceholderText(/Password/i);
       const signInButton = screen.getByTestId("button-submit-login");
+      const emailInput: any = screen.getByPlaceholderText(/Email/i);
 
-      fireEvent.change(emailInput, {
-        target: { value: "tiagodiasmaciel2000@gmail.com" },
-      });
-      fireEvent.change(passwordInput, { target: { value: "123" } });
+      fireEvent.change(emailInput, { target: { value: validUserEmail } });
+      fireEvent.change(passwordInput, { target: { value: validUserPassword } });
 
       await act(() => fireEvent.click(signInButton));
+
+      const authCookie = getCookie("auth.token");
+      const userCookie = getCookie("user");
+
+      expect(authCookie).not.toBeNull();
+      expect(userCookie).not.toBeNull();
+    });
+
+    it("should redirect user to profile page after login with valid data", async () => {
+      const passwordInput: any = screen.getByPlaceholderText(/Password/i);
+      const signInButton = screen.getByTestId("button-submit-login");
+      const emailInput: any = screen.getByPlaceholderText(/Email/i);
+
+      fireEvent.change(emailInput, { target: { value: validUserEmail } });
+      fireEvent.change(passwordInput, { target: { value: validUserPassword } });
+
+      await act(() => fireEvent.click(signInButton));
+
       expect(window.location.pathname).toBe("/profile");
     });
   });
