@@ -34,10 +34,11 @@ export default function SignInComponent() {
           .required("Please enter a email"),
         password: Yup.string().required("Please enter a password."),
       });
-
+      
       await schema.validate(data, {
         abortEarly: false,
       });
+      console.log('TESTSTETSTT');
 
       formRef.current?.setErrors({});
 
