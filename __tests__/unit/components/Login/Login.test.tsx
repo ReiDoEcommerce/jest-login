@@ -39,8 +39,20 @@ describe("Login tests", () => {
     });
 
     it("should have a message error `Please enter a password.` with empty password field after submit form", async () => {
+      const passwordInput: any = screen.getByPlaceholderText(/Password/i);
+      const signInButton = screen.getByTestId("button-submit-login");
 
-      
+      expect(passwordInput).toBeInTheDocument();
+      expect(signInButton).toBeInTheDocument();
+
+      expect(passwordInput.value).toHaveLength(0);
+
+      await act(() => fireEvent.click(signInButton));
+      const passwordMessageError: any = await screen.findByText(
+        /Please enter a password./i
+      );
+
+      expect(passwordMessageError).toBeInTheDocument();
     });
 
     it("should not send a signIn request if at least one field is empty", async () => {});
