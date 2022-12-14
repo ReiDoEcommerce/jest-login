@@ -1,15 +1,13 @@
 import SignInComponent from "../../../../components/sections/login/signIn";
 import { act, fireEvent, render, screen } from "@testing-library/react";
+import { RouterContext } from "next/dist/shared/lib/router-context";
+import * as Mocks from "../../../../__mocks__/userRouterMock";
 import { AuthProvider } from "../../../../src/contexts/Auth";
 import UserDataMock from "../../../../__mocks__/userData";
 import { ProfileProvider } from "src/contexts/Profile";
-import * as Mocks from "../../../../__mocks__/mocks";
 import { api } from "../../../../src/services/api";
 import { getCookie } from "src/utils/cookies";
 import "@testing-library/jest-dom";
-
-Mocks.clearGlobalWindow();
-Mocks.mockNextRouter();
 
 const { validUser } = UserDataMock;
 const { invalidUser } = UserDataMock;
@@ -35,14 +33,18 @@ jest.mock("axios", () => {
 });
 
 describe("Login tests", () => {
+  const router = Mocks.createMockRouter({});
+
   describe("Inputs validation", () => {
     beforeEach(() => {
       render(
-        <ProfileProvider>
-          <AuthProvider>
-            <SignInComponent />
-          </AuthProvider>
-        </ProfileProvider>
+        <RouterContext.Provider value={router}>
+          <ProfileProvider>
+            <AuthProvider>
+              <SignInComponent />
+            </AuthProvider>
+          </ProfileProvider>
+        </RouterContext.Provider>
       );
     });
 
@@ -129,11 +131,13 @@ describe("Login tests", () => {
   describe("Data validation", () => {
     beforeEach(() => {
       render(
-        <ProfileProvider>
-          <AuthProvider>
-            <SignInComponent />
-          </AuthProvider>
-        </ProfileProvider>
+        <RouterContext.Provider value={router}>
+          <ProfileProvider>
+            <AuthProvider>
+              <SignInComponent />
+            </AuthProvider>
+          </ProfileProvider>
+        </RouterContext.Provider>
       );
     });
     it("should have permanents cookies after login with valid data", async () => {
@@ -163,7 +167,7 @@ describe("Login tests", () => {
 
       await act(() => fireEvent.click(signInButton));
 
-      expect(window.location.pathname).toBe("/profile");
+      expect(router.push).toHaveBeenCalledWith("/profile");
     });
   });
 });
