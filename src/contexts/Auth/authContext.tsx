@@ -19,11 +19,11 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const { setAddress } = useProfile();
 
-  async function signIn(payload: { email: string, password: string }) {
+  async function signIn(payload: { email: string; password: string }) {
     try {
       const { auth } = new LoginApi();
-      const { getAddressesList } = new ProfileApi()
-
+      const { getAddressesList } = new ProfileApi();
+      
       const user = await auth(payload);
 
       const address = await getAddressesList();
@@ -33,8 +33,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
       router.push("/profile");
     } catch (e: any) {
-
-      console.log(e)
+      console.log(e);
       throw e;
     }
   }
